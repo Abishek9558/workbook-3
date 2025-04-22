@@ -11,18 +11,19 @@ public class PayrollCalculator {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
 
-            reader.readLine();
+          reader.readLine(); //skips line
+
 
             while ((line = reader.readLine()) != null) {
-                String[] tokens = line.split("\\|");
-                if (tokens.length != 4) {
+                String[] items = line.split("\\|");
+                if (items.length != 4) {
                     System.out.println("Invalid: " + line);
                     continue;
                 }
-                int id = Integer.parseInt(tokens[0]);
-                String name = tokens[1];
-                double hours = Double.parseDouble(tokens[2]);
-                double rate = Double.parseDouble(tokens[3]);
+                int id = Integer.parseInt(items[0]);
+                String name = items[1];
+                double hours = Double.parseDouble(items[2]);
+                double rate = Double.parseDouble(items[3]);
 
                 Employee employee = new Employee(id, name, hours, rate);
 
