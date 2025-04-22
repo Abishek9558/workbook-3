@@ -23,8 +23,7 @@ public class BedtimeStories {
         }catch (FileNotFoundException e){
             System.out.println("The file \"" + FileName + "\" was not found. Please check the name and try again.");
         }
-
-
+        input.close();
     }
 
 }
