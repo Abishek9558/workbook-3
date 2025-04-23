@@ -1,25 +1,28 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.*;
 
 public class PayrollCalculator {
     public static void main(String[] args) {
-        String filename = "employees.csv";
+        Scanner scanner = new Scanner(System.in);
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+        System.out.print("Enter the name of the employee file to process: ");
+        String inputFilePath = scanner.nextLine().trim();
+
+        System.out.print("Enter the name of the payroll file to create: ");
+        String outputFilePath = scanner.nextLine().trim();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFilePath));
+             PrintWriter writer = new PrintWriter(new FileWriter(outputFilePath))) {
+
+            writer.println("id|name|gross pay");
+
             String line;
-
-          reader.readLine(); //skips line
-
-
             while ((line = reader.readLine()) != null) {
                 String[] items = line.split("\\|");
-                if (items.length != 4) {
-                    System.out.println("Invalid: " + line);
-                    continue;
-                }
+                if (items.length != 4) continue;// skip lines
+
                 int id = Integer.parseInt(items[0]);
                 String name = items[1];
                 double hours = Double.parseDouble(items[2]);
@@ -27,20 +30,19 @@ public class PayrollCalculator {
 
                 Employee employee = new Employee(id, name, hours, rate);
 
-                System.out.printf(" ID: %d | Name: %s | Gross pay: $%.2f\n",
-                        employee.getEmployeeId(),
-                        employee.getName(),
-                        employee.getGrossPay());
+                writer.printf("%d|%s|%.2f%n", employee.getEmployeeId(), employee.getName(), employee.getGrossPay());
             }
+
+            System.out.println("Payroll file ceated: " + outputFilePath);
         } catch (IOException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid numeric format: " + e.getMessage());
-
-
+            System.err.println("Error: " + e.getMessage());
         }
     }
-}
+
+
+
+
+
 
 
 
